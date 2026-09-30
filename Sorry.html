@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ขอโทษนะคนดี 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffe9ef;--card:#fff;--ink:#5a2a3c;--pink:#ff6f98;--soft:#ffc2d4;--lilac:#e9defc;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a1620;--card:#3b2230;--ink:#ffe3ec;--soft:#7a3f57;--lilac:#4a3868}}
+:root[data-theme="dark"]{--bg:#2a1620;--card:#3b2230;--ink:#ffe3ec;--soft:#7a3f57;--lilac:#4a3868}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Mali','Sarabun','Noto Sans Thai',sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.h{position:absolute;bottom:-40px;animation:up linear forwards;opacity:.8}
+@keyframes up{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.card{position:relative;width:min(92vw,400px);background:var(--card);border-radius:32px;padding:28px 22px 26px;text-align:center;box-shadow:0 10px 0 var(--soft)}
+.bear{font-size:88px;line-height:1;display:inline-block;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-4deg)}}
+h1{font-size:26px;margin:10px 0 6px}
+#msg{font-size:18px;line-height:1.6;min-height:112px;margin:0 0 14px;white-space:pre-line}
+.row{display:flex;gap:12px;justify-content:center;align-items:center;min-height:64px;flex-wrap:wrap}
+button{font-family:inherit;font-weight:700;border:0;border-radius:999px;cursor:pointer;color:#fff;transition:transform .2s}
+button:active{transform:scale(.94)}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.next,#yes{background:var(--pink);font-size:18px;padding:14px 26px;box-shadow:0 5px 0 #d94b77}
+#no{background:var(--lilac);color:var(--ink);font-size:16px;padding:12px 20px;box-shadow:0 4px 0 #bfaee6}
+.dots{margin-top:14px;font-size:13px;opacity:.6}
+ul{list-style:none;padding:0;margin:0 0 6px;text-align:left;display:inline-block;font-size:17px;line-height:1.9}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){.bear,.h{animation:none}}
+</style>
+</head>
+<body>
+<div id="hearts" aria-hidden="true"></div>
+<main class="card">
+  <div class="bear" id="bear">🧸</div>
+  <h1 id="title"></h1>
+  <p id="msg"></p>
+  <div class="row" id="row"></div>
+  <div class="dots" id="dots"></div>
+</main>
+<script>
+// ✏️ แก้ตรงนี้ให้เป็นของคุณได้เลย
+var NAME = "นกฮูก";        // ชื่อ/ชื่อเล่นแฟน
+var FROM = "Smurfpy";     // ชื่อคุณ
+var SORRY = "ที่ไม่ได้ใส่ใจเธอให้มากพอในวันที่เธอป่วย"; // เช่น "ที่ลืมวันเกิดเธอ"
+
+var steps = [
+  {bear:"🧸", t:"ถึง"+NAME+" 💌", m:"วันนี้มีเรื่องจะบอก...\nแต่ขอให้ฟังจนจบก่อนน้า"},
+  {bear:"🥺", t:"ขอโทษนะ", m:"ขอโทษ"+SORRY+"\nเรารู้ตัวแล้วว่าเราผิด\nให้เราปรับปรุงตัวเราเองได้ไหม"},
+  {bear:"😢", t:"เราคิดถึงเธอ", m:"ไม่มีเธอให้คอยคิดถึง\nมันรู้สึกเงียบเหงามากเลย\nมันรู้สึกหว้าเหว่ในตอนที่ไม่มีเธอ"},
+  {bear:"🥹", t:"สัญญานะ", m:"__promise__"}
+];
+var noTexts = ["ยังงอนอยู่","คิดดีๆ ก่อนน้า 🥺","ให้โอกาสอีกครั้งนะ","ขอกอดสักที","ปุ่มนี้กดยากจัง 😭","ยอมแล้วใช่มั้ย 🥰"];
+var i = 0, noCount = 0, yesScale = 1;
+var $ = function(id){return document.getElementById(id)};
+
+function heart(n){
+  var box=$("hearts"), em=["💗","💖","💕","🌸","✨","💘"];
+  for(var k=0;k<n;k++){
+    var d=document.createElement("span"); d.className="h";
+    d.textContent=em[Math.floor(Math.random()*em.length)];
+    d.style.left=Math.random()*100+"%";
+    d.style.fontSize=(16+Math.random()*26)+"px";
+    d.style.animationDuration=(3+Math.random()*3)+"s";
+    d.style.animationDelay=(Math.random()*.8)+"s";
+    box.appendChild(d); setTimeout(function(x){return function(){x.remove()}}(d),7000);
+  }
+}
+function show(){
+  var s=steps[i];
+  $("bear").textContent=s.bear; $("title").textContent=s.t;
+  if(s.m==="__promise__"){
+    $("msg").innerHTML="<ul><li>💗 จะใส่ใจเธอให้มากขึ้น</li><li>🍰 จะคอยอยู่ข้างๆเธอ</li><li>🤗 จะคอยรับฟังเธอบ่นในทุกๆวัน</li></ul>";
+  } else $("msg").textContent=s.m;
+  var row=$("row"); row.innerHTML="";
+  if(i<steps.length-1){
+    var b=document.createElement("button"); b.className="next"; b.textContent="ต่อไป 💗";
+    b.onclick=function(){i++;show();heart(6)}; row.appendChild(b);
+  } else {
+    var y=document.createElement("button"); y.id="yes"; y.textContent="หายงอนแล้ว 💕";
+    y.onclick=win;
+    var n=document.createElement("button"); n.id="no"; n.textContent=noTexts[0];
+    n.onclick=function(){
+      noCount++; yesScale=Math.min(yesScale+.22,2);
+      y.style.transform="scale("+yesScale+")"; y.style.margin=(yesScale*6)+"px";
+      n.textContent=noTexts[Math.min(noCount,noTexts.length-1)];
+      n.style.transform="scale("+Math.max(1-noCount*.13,.45)+")";
+      var bears=["🥺","😢","😭","🥹","🥹","🥺"];
+      $("bear").textContent=bears[Math.min(noCount-1,5)];
+      if(noCount>=5){n.hidden=true; $("msg").textContent="งั้นเหลือปุ่มเดียวแล้วนะ 🥰"}
+    };
+    row.appendChild(y); row.appendChild(n);
+  }
+  $("dots").textContent=(i+1)+" / "+steps.length;
+}
+function win(){
+  $("bear").textContent="🥰"; $("title").textContent="เย้! รักที่สุดเลย 💖";
+  $("msg").textContent="ขอบคุณที่ให้อภัยนะ\nรักเธอนะ จุ๊บๆ 😘\n\n— จาก"+FROM;
+  $("row").innerHTML=""; $("dots").textContent="";
+  heart(40); setInterval(function(){heart(8)},1500);
+}
+show();
+</script>
+</body>
+</html>
